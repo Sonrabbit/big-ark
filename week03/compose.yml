@@ -1,0 +1,15 @@
+services:
+  storage:                                  # 서비스 이름 — 명령에서 이 이름으로 부른다
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"                         # API — 프로그램이 쓴다
+      - "9001:9001"                         # 콘솔 — 사람이 본다
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}      # 왼쪽은 MinIO 가 정한 이름, 오른쪽은 내가 정한 이름
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - storage_data:/data                  # ★ 이 줄이 오늘의 통과선이다
+
+volumes:
+  storage_data:                             # 이름 있는 볼륨을 선언한다 — 맨 왼쪽에서 시작한다
